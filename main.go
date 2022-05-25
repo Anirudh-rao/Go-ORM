@@ -15,19 +15,6 @@ type User struct {
 	Email string
 }
 
-//Intial Migration Function
-func initialMigration() {
-	db, err := gorm.Open("sqlite3", "test.db")
-	if err != nil {
-		fmt.Println(err.Error())
-		panic("faild to connect to database")
-	}
-	defer db.Close()
-
-	//Migrate the schema
-	db.AutoMigrate(&User{})
-}
-
 //Getting APi ready
 func AllUsers(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "All users Endpoint hit")
@@ -54,6 +41,20 @@ func handleRequests() {
 	//Runnning Server And Checking for Fatal Error
 	log.Fatal(http.ListenAndServe(":8081", myrouter))
 }
+
+//Intial Migration Function
+func initialMigration() {
+	db, err := gorm.Open("sqlite3", "test.db")
+	if err != nil {
+		fmt.Println(err.Error())
+		panic("faild to connect to database")
+	}
+	defer db.Close()
+
+	//Migrate the schema
+	db.AutoMigrate(&User{})
+}
+
 func main() {
 	fmt.Println("Go ORM Tutorial")
 	initialMigration()
